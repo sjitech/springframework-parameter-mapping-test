@@ -28,6 +28,7 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     // end::tests[]
     compile('com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.7.3')
+    compile("org.hibernate:hibernate-validator")
 }
 
 task wrapper(type: Wrapper) {

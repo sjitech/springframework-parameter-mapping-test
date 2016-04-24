@@ -96,4 +96,45 @@ public class HelloControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo(val.toString())));
     }
+
+    @Test
+    public void serveRequiredString() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/serveRequiredString")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo(testDefaultString)));
+
+        mvc.perform(MockMvcRequestBuilders.get("/serveRequiredString")
+                .param("v", "")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo(testDefaultString)));
+
+        mvc.perform(MockMvcRequestBuilders.get("/serveRequiredString")
+                .param("v", "xxx")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("xxx")));
+    }
+
+    @Test
+    public void serveLengthLimitedString() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/serveLengthLimitedString")
+                .param("v", "xxx")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("xxx")));
+        mvc.perform(MockMvcRequestBuilders.get("/serveLengthLimitedString")
+                .param("v", "s234567890s234567890123")
+        )
+                .andExpect(status().is(400));
+    }
+
+    @Test
+    public void servePathVar() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.get("/servePathVar/xxx")
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().string(equalTo("xxx")));
+    }
 }

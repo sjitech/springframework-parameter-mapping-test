@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -96,5 +97,25 @@ public class HelloController {
     @RequestMapping("/serveObjectWithHyphenNameProperty")
     public String serveObjectWithHyphenNameProperty(@RequestBody Class3 v) {
         return v.getHyphenNameProperty().toString();
+    }
+
+    public static final String testDefaultString = "testDefaultString";
+
+    @RequestMapping("/serveRequiredString")
+    public String serveRequiredString(@RequestParam(defaultValue = testDefaultString) String v) {
+        return v;
+    }
+
+    @RequestMapping("/serveLengthLimitedString")
+    public String serveLengthLimitedString(
+            @RequestParam() //(defaultValue = testDefaultString)
+            @Size(min = 1, max = 20)
+                    String v) {
+        return v;
+    }
+
+    @RequestMapping("/servePathVar/{hyphen-name}")
+    public String servePathVar(@PathVariable("hyphen-name") String v) {
+        return v;
     }
 }
